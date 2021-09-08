@@ -1,22 +1,27 @@
-import logo from './logo.svg';
-import * as React from 'react'; 
-import './App.css';
+import React, { Component } from "react";
+import TodoItem from "./components/TodoItem";
+import Header from "./components/Header";
 
-const { useState } = React; 
+import todos from "./todos";
 
-function App() {
-  const [counter, setCounter] = useState(0); 
-
-  return (
-    <div className="App">
-      <header className="App-header">
-        <div>
-        <p>Count: {counter}</p>
-        </div>
-        <button onClick = {() => {setCounter(counter + 1)}}>Click me... </button>
-      </header>
-    </div>
-  );
+class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      todoList: todos,
+    };
+  }
+  render() {
+    const myTodos = this.state.todoList.map((item) => (
+      <TodoItem key={item.id} item={item} />
+    ));
+    return (
+      <>
+        <Header user="Derek" />
+        {myTodos}
+      </>
+    );
+  }
 }
 
 export default App;
