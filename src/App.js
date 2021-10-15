@@ -4,6 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import TodoItem from "./components/TodoItem";
 import Header from "./components/Header";
 import todos from "./todos";
+import "./App.css";
 
 class App extends Component {
   constructor() {
@@ -11,31 +12,34 @@ class App extends Component {
     this.state = {
       todoList: todos,
     };
+    this.handleChange = this.handleChange.bind(this);
   }
 
-  handleClick() {
-    console.log("biiiiiiitch");
-  }
+  handleChange = (id) => {
+    this.setState((prevState) => {
+      const updatedState = prevState.todoList.map((todo) => {
+        if (todo.id === id) {
+          return {
+            ...todo,
+            completed: !todo.completed,
+          };
+        }
+        return todo;
+      });
+      return {
+        todoList: updatedState,
+      };
+    });
+  };
 
   render() {
     const myTodos = this.state.todoList.map((item) => (
-      <TodoItem key={item.id} item={item} />
+      <TodoItem key={item.id} item={item} handleChange={this.handleChange} />
     ));
     return (
       <>
         <Header user="Derek" />
-        {myTodos}
-        <div className="container"></div>
-        <button className="mt-5" onClick={this.handleClick}>
-          Click Me!
-        </button>
-        <div className="container">
-          <img
-            onMouseOver={() => console.log("Whaaaat mouseover")}
-            alt="Bill Murray"
-            src="https://www.fillmurray.com/200/100"
-          ></img>
-        </div>
+        <div className="container todo-list">{myTodos}</div>
       </>
     );
   }
